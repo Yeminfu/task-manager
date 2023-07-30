@@ -1,17 +1,19 @@
 "use client"
 
 import { useState } from "react";
+import Card from "./card";
 
-// const columns = 4;,
 
-
-interface Column {
+export interface Task {
     id: number
     title: string
-    items: {
-        id: number
-        title: string
-    }[]
+}
+
+
+export interface Column {
+    id: number
+    title: string
+    items: Task[]
 }
 
 const columns_: Column[] = [
@@ -63,27 +65,6 @@ export default function TaskBoard() {
                     }
                     return column;
                 }));
-                console.log('create card', columns.map((column: any, i: number) => {
-                    if (i === 0) {
-                        return {
-                            ...column,
-                            items: [
-                                ...column.items,
-                                { id: 11 }
-                            ]
-                        }
-                    }
-                    return column;
-                }));
-                // setColumns(
-                //     columns_[0].items?.push(
-                //         {
-                //             title: "Новые",
-                //             items: [
-                //                 { id: 1 }
-                //             ]
-                //         },)
-                // )
             }}
         >Создать карточку {columns.length}</button>
         <div className="d-flex">
@@ -91,16 +72,13 @@ export default function TaskBoard() {
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-
                             <div className="bg-white p-1">{column.title}</div>
                             <div>
-                                {column.items.map((item) => <div>{item.title}</div>)}
+                                {column.items.map((item, i1) => <Card key={i1} item={item} />)}
                             </div>
                         </div>
                     </div>
                 )}
-            {/* <div className="col"> */}
-            {/* </div> */}
         </div>
     </div >
 }
