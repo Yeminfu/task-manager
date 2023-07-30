@@ -4,6 +4,7 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskBoard from './tools/taskBoard';
+import db_connection from './tools/dbConnect';
 // import { useState } from 'react';
 
 
@@ -18,3 +19,10 @@ export default function Home() {
     </main>
   )
 }
+
+
+db_connection.query("SELECT * FROM columns", function (err, res) {
+  console.log('res', res);
+  console.log('err', err);
+
+})

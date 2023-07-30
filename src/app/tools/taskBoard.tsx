@@ -6,7 +6,9 @@ import Card from "./card";
 
 export interface Task {
     id: number
-    title: string
+    title: string,
+    column_id: number
+    project_id: number
 }
 
 
@@ -21,7 +23,7 @@ const columns_: Column[] = [
         id: 1,
         title: "Новые",
         items: [
-            { id: 1, title: "Создать менеджер задач", }
+            { id: 1, title: "Создать менеджер задач", column_id: 1, project_id: 1 }
         ]
     },
     {
@@ -29,11 +31,11 @@ const columns_: Column[] = [
         title: "Сейчас в работе",
         items: []
     },
-    {
-        id: 3,
-        title: "Срочные",
-        items: []
-    },
+    // {
+    //     id: 3,
+    //     title: "Срочные",
+    //     items: []
+    // },
     {
         id: 3,
         title: "Выполненные",
@@ -42,6 +44,11 @@ const columns_: Column[] = [
     {
         id: 3,
         title: "На паузе",
+        items: []
+    },
+    {
+        id: 4,
+        title: "Корзина",
         items: []
     },
 ];
@@ -58,7 +65,7 @@ export default function TaskBoard() {
                             ...column,
                             items: [
                                 ...column.items,
-                                { id: 11, title: "Новая задача" },
+                                { id: 11, title: "Новая задача", column_id: 1, project_id: 1 },
                             ]
                         }
                     }
@@ -79,5 +86,6 @@ export default function TaskBoard() {
                     </div>
                 )}
         </div>
+        <pre>{JSON.stringify(columns, null, 2)}</pre>
     </div >
 }
