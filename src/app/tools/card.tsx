@@ -29,7 +29,6 @@ export default function Card(props: { item: Task, children?: any }) {
             <div className="card-body">
                 <div>Колонка #{props.item.column_id}, карточка #{props.item.id}</div>
 
-                <div>columnId_{props.item.id}</div>
                 {(() => {
                     if (!isOpen) return <h5 className="card-title">{props.item.title}</h5>
                     return <>
