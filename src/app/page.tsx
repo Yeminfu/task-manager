@@ -11,11 +11,10 @@ import TaskBoard from './tools/taskBoard';
 
 export default function Home() {
   return (
-    <div className='container'>
-      <TaskBoard />
-     
-      {/* asd
-      <div className="d-flex"></div> */}
-    </div>
+    <main>
+      <div className='container'>
+        <TaskBoard />
+      </div>
+    </main>
   )
 }

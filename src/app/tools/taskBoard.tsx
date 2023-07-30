@@ -50,7 +50,6 @@ const columns_: Column[] = [
 export default function TaskBoard() {
     const [columns, setColumns] = useState<Column[]>(columns_);
     return <div>
-        {/* <pre>{JSON.stringify(columns, null, 2)}</pre> */}
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
                 setColumns(columns.map((column: Column, i: number) => {
