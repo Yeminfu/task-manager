@@ -8,7 +8,7 @@ type Inputs = {
     exampleRequired: string
 }
 
-export default function Card(props: { item: Task, children?: any }) {
+export default function Card(props: { task: Task, children?: any }) {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -39,10 +39,10 @@ export default function Card(props: { item: Task, children?: any }) {
     return <>
         <div className="card mt-2" >
             <div className="card-body">
-                <div>Колонка #{props.item.column_id}, карточка #{props.item.id}</div>
+                <div>Колонка #{props.task.column_id}, карточка #{props.task.id}</div>
 
                 {(() => {
-                    if (!isOpen) return <h5 className="card-title">{props.item.title}</h5>
+                    if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
                     return <>
                         <div className="p-2">
                             <form onSubmit={handleSubmit(onSubmit)}>

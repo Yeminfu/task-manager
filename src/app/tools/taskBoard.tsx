@@ -1,7 +1,7 @@
 "use client"
 
-// import { useState } from "react";
-// import Card from "./card";
+import { useState } from "react";
+import Card from "./card";
 import { Project } from "../page";
 
 
@@ -20,10 +20,8 @@ export interface Column {
 }
 
 export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
-    // const [stateColumns, setColumns] = useState(props.columns);
+    const [stateTasks, setStateTasks] = useState(props.tasks);
     return <div>
-
-
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
                 console.log('создаем карточку');
@@ -38,6 +36,8 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                         })
                     }
                 )
+                    .then(x => x.json())
+                    .then(x => console.log('xx', x))
             }}
         >Создать карточку</button>
         <div className="d-flex">
@@ -46,9 +46,13 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
                             <div className="bg-white p-1">{column.title}</div>
-                            {/* <div>
-                                {column.items.map((item, i1) => <Card key={i1} item={item} />)}
-                            </div> */}
+                            <div>
+                                {stateTasks
+                                    .filter(task => task.column_id === column.id)
+                                    .map((task, i1) => <div key={i1}>
+                                        <Card task={task} />
+                                    </div>)}
+                            </div>
                         </div>
                     </div>
                 )}
