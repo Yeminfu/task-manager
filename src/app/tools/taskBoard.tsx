@@ -49,7 +49,7 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                             <div>
                                 {stateTasks
                                     .map((task, i1) => <div key={i1}>
-                                        <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre>
+                                        {/* <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre> */}
                                         {task.column_id === column.id ? <Card task={task} /> : null}
 
                                     </div>)}
