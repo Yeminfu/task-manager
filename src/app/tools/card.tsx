@@ -3,11 +3,6 @@ import { Task } from "./taskBoard"
 import { useState } from "react"
 
 
-type Inputs = {
-    task_title: string
-    exampleRequired: string
-}
-
 export default function Card(props: { task: Task, children?: any }) {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -17,22 +12,27 @@ export default function Card(props: { task: Task, children?: any }) {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<Inputs>()
+    } = useForm<Task>({
+        defaultValues: {
+            id: props.task.id
+        }
+    })
 
     const onSubmit: SubmitHandler<any> = (task: Task) => {
-        console.log(task.title)
-        // fetch(
-        //     "/api/create-task",
-        //     {
-        //         method: "POST",
-        //         body: JSON.stringify({
-        //             // a: 'bbb'
-        //             id: task.id,
-        //             title: task.title,
-        //             column_id: task.column_id,
-        //         })
-        //     }
-        // )
+        console.log(task)
+        fetch(
+            "/api/tasks/edit",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    ...task
+                })
+            }
+        )
+            .then(x => x.json)
+            .then(x => {
+                console.log(x);
+            })
     }
 
 
@@ -46,7 +46,7 @@ export default function Card(props: { task: Task, children?: any }) {
                     return <>
                         <div className="p-2">
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <input {...register("task_title")} placeholder="Текст задачи" />
+                                <input {...register("title")} placeholder="Текст задачи" />
                                 <button>сохранить</button>
                             </form>
                         </div>
