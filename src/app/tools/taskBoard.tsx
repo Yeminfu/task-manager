@@ -27,6 +27,17 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
                 console.log('создаем карточку');
+                fetch(
+                    "/api/create-task",
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            title: "Новая задача",
+                            column_id: 1,
+                            project_id: 1,
+                        })
+                    }
+                )
             }}
         >Создать карточку</button>
         <div className="d-flex">
