@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react";
-import Card from "./card";
+// import { useState } from "react";
+// import Card from "./card";
+import { Project } from "../page";
 
 
 export interface Task {
@@ -18,74 +19,44 @@ export interface Column {
     items: Task[]
 }
 
-const columns_: Column[] = [
-    {
-        id: 1,
-        title: "Новые",
-        items: [
-            { id: 1, title: "Создать менеджер задач", column_id: 1, project_id: 1 }
-        ]
-    },
-    {
-        id: 2,
-        title: "Сейчас в работе",
-        items: []
-    },
-    // {
-    //     id: 3,
-    //     title: "Срочные",
-    //     items: []
-    // },
-    {
-        id: 3,
-        title: "Выполненные",
-        items: []
-    },
-    {
-        id: 3,
-        title: "На паузе",
-        items: []
-    },
-    {
-        id: 4,
-        title: "Корзина",
-        items: []
-    },
-];
-
-
-export default function TaskBoard() {
-    const [columns, setColumns] = useState<Column[]>(columns_);
+export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
+    // const [stateColumns, setColumns] = useState(props.columns);
     return <div>
+
+
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
-                setColumns(columns.map((column: Column, i: number) => {
-                    if (i === 0) {
-                        return {
-                            ...column,
-                            items: [
-                                ...column.items,
-                                { id: 11, title: "Новая задача", column_id: 1, project_id: 1 },
-                            ]
-                        }
-                    }
-                    return column;
-                }));
+                console.log('создаем карточку');
             }}
-        >Создать карточку {columns.length}</button>
+        >Создать карточку</button>
         <div className="d-flex">
-            {columns
+            {props.columns
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
                             <div className="bg-white p-1">{column.title}</div>
-                            <div>
+                            {/* <div>
                                 {column.items.map((item, i1) => <Card key={i1} item={item} />)}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 )}
         </div>
-        <pre>{JSON.stringify(columns, null, 2)}</pre>
+        <table className="table">
+            <thead>
+                <tr>
+                    <th>columns</th>
+                    <th>project</th>
+                    <th>tasks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><pre>{JSON.stringify(props.columns, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(props.project, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(props.tasks, null, 2)}</pre></td>
+                </tr>
+            </tbody>
+        </table>
     </div >
 }

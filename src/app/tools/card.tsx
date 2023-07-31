@@ -19,8 +19,20 @@ export default function Card(props: { item: Task, children?: any }) {
         formState: { errors },
     } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (task: Inputs) => {
-        console.log(task.task_title)
+    const onSubmit: SubmitHandler<any> = (task: Task) => {
+        console.log(task.title)
+        // fetch(
+        //     "/api/create-task",
+        //     {
+        //         method: "POST",
+        //         body: JSON.stringify({
+        //             // a: 'bbb'
+        //             id: task.id,
+        //             title: task.title,
+        //             column_id: task.column_id,
+        //         })
+        //     }
+        // )
     }
 
 
