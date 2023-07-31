@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect } from "react";
 import Card from "./card";
 import { Project } from "../page";
+import { createStore, createEvent } from "effector";
+import { useStore } from "effector-react";
 
 export interface Task {
     id: number
@@ -17,18 +19,24 @@ export interface Column {
     items: Task[]
 }
 
+const setStateTasks = createEvent<Task[]>();
+
+const $stateTasks = createStore<Task[]>([])
+    .on(
+        setStateTasks,
+        (_, x) => x ? x : []
+    );
+
 export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
-    const [stateTasks, setStateTasks] = useState(props.tasks);
+    useEffect(() => {
+        setStateTasks(props.tasks);
+    }, [props.tasks]);
+
+    const stateTasks: Task[] = useStore($stateTasks);
 
     return <div>
         <button onClick={() => {
-            fetch(
-                "/api/tasks/get",
-            )
-                .then(x => x.json())
-                .then(({ tasks }) => {
-                    setStateTasks(tasks);
-                })
+            updatetasks();
         }}>
             update tasks
         </button>
@@ -56,13 +64,12 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-                            <div className="bg-white p-1">{column.title} {stateTasks.length}</div>
+                            <div className="bg-white p-1">{column.title} {column.id}</div>
                             <div>
                                 {stateTasks
                                     .map((task, i1) => <div key={i1}>
                                         {/* <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre> */}
                                         {task.column_id === column.id ? <Card task={task} /> : null}
-
                                     </div>)}
                             </div>
                         </div>
@@ -88,6 +95,12 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
     </div >
 }
 
-function updateTasks() {
-
+export function updatetasks() {
+    fetch(
+        "/api/tasks/get",
+    )
+        .then(x => x.json())
+        .then(({ tasks }) => {
+            setStateTasks(tasks);
+        })
 }

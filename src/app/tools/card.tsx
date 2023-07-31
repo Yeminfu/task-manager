@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Task } from "./taskBoard"
+import { Task, updatetasks } from "./taskBoard"
 import { useState } from "react"
 
 export default function Card(props: { task: Task, children?: any }) {
@@ -48,6 +48,24 @@ export default function Card(props: { task: Task, children?: any }) {
                     </>
                 })()}
 
+                <div className="p-2">
+                    <h3>Переместить в</h3>
+                    <ul>
+                        {[
+                            [1, "Новые"],
+                            [2, "Сейчас в работе"],
+                            [3, "Выполненные"],
+                            [4, "На паузе"],
+                            [5, "Корзина"],
+                        ]
+                            .map(([columnId, columnName], i) => <li
+                                onClick={() => {
+                                    moveToColumn(props.task, Number(columnId))
+                                }}
+                            >{columnName}</li>)}
+                    </ul>
+                </div>
+
                 <div>
                     <button onClick={() => setIsOpen(!isOpen)}>Изменить/отмена</button>
                 </div>
@@ -56,4 +74,28 @@ export default function Card(props: { task: Task, children?: any }) {
         </div>
         {props.children}
     </>
+}
+
+
+function moveToColumn(task: Task, newColumnId: number) {
+    console.log({
+        ...task,
+        column_id: newColumnId
+    });
+
+    fetch(
+        "/api/tasks/edit",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                ...task,
+                column_id: newColumnId
+            })
+        }
+    )
+        .then(x => x.json)
+        .then(x => {
+            console.log(x);
+            updatetasks();
+        })
 }
