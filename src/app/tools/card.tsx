@@ -2,19 +2,15 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { Task } from "./taskBoard"
 import { useState } from "react"
 
-
 export default function Card(props: { task: Task, children?: any }) {
-
     const [isOpen, setIsOpen] = useState(false);
-
     const {
         register,
         handleSubmit,
-        watch,
-        formState: { errors },
     } = useForm<Task>({
         defaultValues: {
-            id: props.task.id
+            id: props.task.id,
+            title: props.task.title,
         }
     })
 
@@ -40,7 +36,6 @@ export default function Card(props: { task: Task, children?: any }) {
         <div className="card mt-2" >
             <div className="card-body">
                 <div>Колонка #{props.task.column_id}, карточка #{props.task.id}</div>
-
                 {(() => {
                     if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
                     return <>

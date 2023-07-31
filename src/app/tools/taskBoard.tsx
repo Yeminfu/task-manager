@@ -21,6 +21,17 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
     const [stateTasks, setStateTasks] = useState(props.tasks);
 
     return <div>
+        <button onClick={() => {
+            fetch(
+                "/api/tasks/get",
+            )
+                .then(x => x.json())
+                .then(({ tasks }) => {
+                    setStateTasks(tasks);
+                })
+        }}>
+            update tasks
+        </button>
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
                 fetch(
@@ -75,4 +86,8 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
             </tbody>
         </table>
     </div >
+}
+
+function updateTasks() {
+
 }

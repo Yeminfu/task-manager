@@ -61,7 +61,7 @@ async function getProjects(): Promise<Project[]> {
 }
 
 
-async function getTasks(): Promise<Task[]> {
+export async function getTasks(): Promise<Task[]> {
   return await new Promise(
     r => db_connection.query(
       `SELECT * FROM tasks`,
