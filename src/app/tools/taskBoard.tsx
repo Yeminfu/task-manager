@@ -4,14 +4,12 @@ import { useState } from "react";
 import Card from "./card";
 import { Project } from "../page";
 
-
 export interface Task {
     id: number
     title: string,
     column_id: number
     project_id: number
 }
-
 
 export interface Column {
     id: number
@@ -21,10 +19,10 @@ export interface Column {
 
 export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
     const [stateTasks, setStateTasks] = useState(props.tasks);
+
     return <div>
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
-                console.log('создаем карточку');
                 fetch(
                     "/api/create-task",
                     {
@@ -37,7 +35,9 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                     }
                 )
                     .then(x => x.json())
-                    .then(x => console.log('xx', x))
+                    .then(newTask => {
+                        setStateTasks([...stateTasks, newTask.task]);
+                    })
             }}
         >Создать карточку</button>
         <div className="d-flex">
@@ -45,12 +45,13 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-                            <div className="bg-white p-1">{column.title}</div>
+                            <div className="bg-white p-1">{column.title} {stateTasks.length}</div>
                             <div>
                                 {stateTasks
-                                    .filter(task => task.column_id === column.id)
                                     .map((task, i1) => <div key={i1}>
-                                        <Card task={task} />
+                                        <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre>
+                                        {task.column_id === column.id ? <Card task={task} /> : null}
+
                                     </div>)}
                             </div>
                         </div>
@@ -62,14 +63,14 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 <tr>
                     <th>columns</th>
                     <th>project</th>
-                    <th>tasks</th>
+                    <th>tasks {stateTasks.length}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><pre>{JSON.stringify(props.columns, null, 2)}</pre></td>
                     <td><pre>{JSON.stringify(props.project, null, 2)}</pre></td>
-                    <td><pre>{JSON.stringify(props.tasks, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(stateTasks, null, 2)}</pre></td>
                 </tr>
             </tbody>
         </table>
