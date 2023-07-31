@@ -1,0 +1,11 @@
+[
+    "Новые",
+    "В работе",
+    "Выполненные",
+    "На паузе",
+    "Корзина"
+]
+    .map(col_name =>
+        `INSERT INTO columns (title) VALUES ("${col_name}")`
+    )
+    .join("; ")

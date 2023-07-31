@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Card from "./card";
+import { Project } from "../page";
 
 
 export interface Task {
     id: number
-    title: string
+    title: string,
+    column_id: number
+    project_id: number
 }
 
 
@@ -16,68 +19,59 @@ export interface Column {
     items: Task[]
 }
 
-const columns_: Column[] = [
-    {
-        id: 1,
-        title: "Новые",
-        items: [
-            { id: 1, title: "Создать менеджер задач", }
-        ]
-    },
-    {
-        id: 2,
-        title: "Сейчас в работе",
-        items: []
-    },
-    {
-        id: 3,
-        title: "Срочные",
-        items: []
-    },
-    {
-        id: 3,
-        title: "Выполненные",
-        items: []
-    },
-    {
-        id: 3,
-        title: "На паузе",
-        items: []
-    },
-];
-
-
-export default function TaskBoard() {
-    const [columns, setColumns] = useState<Column[]>(columns_);
+export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
+    const [stateTasks, setStateTasks] = useState(props.tasks);
     return <div>
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
-                setColumns(columns.map((column: Column, i: number) => {
-                    if (i === 0) {
-                        return {
-                            ...column,
-                            items: [
-                                ...column.items,
-                                { id: 11, title: "Новая задача" },
-                            ]
-                        }
+                console.log('создаем карточку');
+                fetch(
+                    "/api/create-task",
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            title: "Новая задача",
+                            column_id: 1,
+                            project_id: 1,
+                        })
                     }
-                    return column;
-                }));
+                )
+                    .then(x => x.json())
+                    .then(x => console.log('xx', x))
             }}
-        >Создать карточку {columns.length}</button>
+        >Создать карточку</button>
         <div className="d-flex">
-            {columns
+            {props.columns
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
                             <div className="bg-white p-1">{column.title}</div>
                             <div>
-                                {column.items.map((item, i1) => <Card key={i1} item={item} />)}
+                                {stateTasks
+                                    .filter(task => task.column_id === column.id)
+                                    .map((task, i1) => <div key={i1}>
+                                        <Card task={task} />
+                                    </div>)}
                             </div>
                         </div>
                     </div>
                 )}
         </div>
+        <table className="table">
+            <thead>
+                <tr>
+                    <th>columns</th>
+                    <th>project</th>
+                    <th>tasks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><pre>{JSON.stringify(props.columns, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(props.project, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(props.tasks, null, 2)}</pre></td>
+                </tr>
+            </tbody>
+        </table>
     </div >
 }

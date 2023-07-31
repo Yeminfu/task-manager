@@ -8,8 +8,7 @@ type Inputs = {
     exampleRequired: string
 }
 
-
-export default function Card(props: { item: Task, children?: any }) {
+export default function Card(props: { task: Task, children?: any }) {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -19,15 +18,31 @@ export default function Card(props: { item: Task, children?: any }) {
         watch,
         formState: { errors },
     } = useForm<Inputs>()
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
+    const onSubmit: SubmitHandler<any> = (task: Task) => {
+        console.log(task.title)
+        // fetch(
+        //     "/api/create-task",
+        //     {
+        //         method: "POST",
+        //         body: JSON.stringify({
+        //             // a: 'bbb'
+        //             id: task.id,
+        //             title: task.title,
+        //             column_id: task.column_id,
+        //         })
+        //     }
+        // )
+    }
 
 
     return <>
-        <div className="card" >
+        <div className="card mt-2" >
             <div className="card-body">
+                <div>Колонка #{props.task.column_id}, карточка #{props.task.id}</div>
 
                 {(() => {
-                    if (!isOpen) return <h5 className="card-title">{props.item.title}</h5>
+                    if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
                     return <>
                         <div className="p-2">
                             <form onSubmit={handleSubmit(onSubmit)}>
