@@ -18,6 +18,8 @@ export async function POST(request: Request) {
 
         db_connection.query(qs, values, function (err, res: any) {
             if (err) { console.log('err #c9c6f3bnNn', err) }
+            console.log(res);
+            
             r(res.affectedRows);
         })
     });
