@@ -55,6 +55,7 @@ export default function Card(props: { task: Task, children?: any }) {
                                         [5, "Корзина"],
                                     ]
                                         .map(([columnId, columnName], i) => <li
+                                        key={i}
                                             onClick={() => {
                                                 moveToColumn(props.task, Number(columnId))
                                             }}
