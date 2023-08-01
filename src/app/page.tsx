@@ -18,11 +18,6 @@ export interface Task {
 
 export default async function Home() {
 
-  await db_connection.connect(function (z) {
-    console.log('zzz', z);
-  })
-
-
   const columns: Column[] = await getColumns();
   const projects: Project[] = await getProjects();
   if (!projects) return <>Не загрузились проекты</>;
