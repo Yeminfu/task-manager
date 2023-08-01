@@ -18,7 +18,9 @@ export interface Task {
 
 export default async function Home() {
   const columns: Column[] = await getColumns();
-  const [project]: Project[] = await getProjects();
+  const projects: Project[] = await getProjects();
+  if (!projects) return <>Не загрузились проекты</>;
+  const project = projects[0];
   const tasks: Task[] = await getTasks();
   return (
     <main>

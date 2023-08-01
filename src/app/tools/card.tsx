@@ -44,27 +44,26 @@ export default function Card(props: { task: Task, children?: any }) {
                                 <input {...register("title")} placeholder="Текст задачи" />
                                 <button>сохранить</button>
                             </form>
+                            <div className="p-2">
+                                <p>Переместить в</p>
+                                <ul>
+                                    {[
+                                        [1, "Новые"],
+                                        [2, "Сейчас в работе"],
+                                        [3, "Выполненные"],
+                                        [4, "На паузе"],
+                                        [5, "Корзина"],
+                                    ]
+                                        .map(([columnId, columnName], i) => <li
+                                            onClick={() => {
+                                                moveToColumn(props.task, Number(columnId))
+                                            }}
+                                        >{columnName}</li>)}
+                                </ul>
+                            </div>
                         </div>
                     </>
                 })()}
-
-                <div className="p-2">
-                    <h3>Переместить в</h3>
-                    <ul>
-                        {[
-                            [1, "Новые"],
-                            [2, "Сейчас в работе"],
-                            [3, "Выполненные"],
-                            [4, "На паузе"],
-                            [5, "Корзина"],
-                        ]
-                            .map(([columnId, columnName], i) => <li
-                                onClick={() => {
-                                    moveToColumn(props.task, Number(columnId))
-                                }}
-                            >{columnName}</li>)}
-                    </ul>
-                </div>
 
                 <div>
                     <button onClick={() => setIsOpen(!isOpen)}>Изменить/отмена</button>
