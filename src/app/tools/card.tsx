@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Task, updatetasks } from "./taskBoard"
 import { useState } from "react"
+import { toast } from "react-toastify";
 
 export default function Card(props: { task: Task, children?: any }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,12 +28,12 @@ export default function Card(props: { task: Task, children?: any }) {
                 })
             }
         )
-            .then(x => x.json)
+            .then(x => x.json())
             .then(x => {
-                console.log(x);
+                toast(JSON.stringify(x, null, 2))
+                console.log('xx', x);
             })
     }
-
 
     return <>
         <div className="card mt-2" >
