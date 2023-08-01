@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect } from "react";
 import Card from "./card";
 import { Project } from "../page";
-
+import { createStore, createEvent } from "effector";
+import { useStore } from "effector-react";
 
 export interface Task {
     id: number
@@ -12,19 +13,35 @@ export interface Task {
     project_id: number
 }
 
-
 export interface Column {
     id: number
     title: string
     items: Task[]
 }
 
+const setStateTasks = createEvent<Task[]>();
+
+const $stateTasks = createStore<Task[]>([])
+    .on(
+        setStateTasks,
+        (_, x) => x ? x : []
+    );
+
 export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
-    const [stateTasks, setStateTasks] = useState(props.tasks);
+    useEffect(() => {
+        setStateTasks(props.tasks);
+    }, [props.tasks]);
+
+    const stateTasks: Task[] = useStore($stateTasks);
+
     return <div>
+        <button onClick={() => {
+            updatetasks();
+        }}>
+            update tasks
+        </button>
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
-                console.log('создаем карточку');
                 fetch(
                     "/api/create-task",
                     {
@@ -37,7 +54,9 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                     }
                 )
                     .then(x => x.json())
-                    .then(x => console.log('xx', x))
+                    .then(newTask => {
+                        setStateTasks([...stateTasks, newTask.task]);
+                    })
             }}
         >Создать карточку</button>
         <div className="d-flex">
@@ -45,12 +64,12 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 ?.map((column, i: any) =>
                     <div key={i}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-                            <div className="bg-white p-1">{column.title}</div>
+                            <div className="bg-white p-1">{column.title} {column.id}</div>
                             <div>
                                 {stateTasks
-                                    .filter(task => task.column_id === column.id)
                                     .map((task, i1) => <div key={i1}>
-                                        <Card task={task} />
+                                        {/* <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre> */}
+                                        {task.column_id === column.id ? <Card task={task} /> : null}
                                     </div>)}
                             </div>
                         </div>
@@ -62,16 +81,26 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 <tr>
                     <th>columns</th>
                     <th>project</th>
-                    <th>tasks</th>
+                    <th>tasks {stateTasks.length}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><pre>{JSON.stringify(props.columns, null, 2)}</pre></td>
                     <td><pre>{JSON.stringify(props.project, null, 2)}</pre></td>
-                    <td><pre>{JSON.stringify(props.tasks, null, 2)}</pre></td>
+                    <td><pre>{JSON.stringify(stateTasks, null, 2)}</pre></td>
                 </tr>
             </tbody>
         </table>
     </div >
+}
+
+export function updatetasks() {
+    fetch(
+        "/api/tasks/get",
+    )
+        .then(x => x.json())
+        .then(({ tasks }) => {
+            setStateTasks(tasks);
+        })
 }

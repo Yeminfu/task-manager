@@ -1,38 +1,34 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Task } from "./taskBoard"
+import { Task, updatetasks } from "./taskBoard"
 import { useState } from "react"
 
-
-type Inputs = {
-    task_title: string
-    exampleRequired: string
-}
-
 export default function Card(props: { task: Task, children?: any }) {
-
     const [isOpen, setIsOpen] = useState(false);
-
     const {
         register,
         handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<Inputs>()
+    } = useForm<Task>({
+        defaultValues: {
+            id: props.task.id,
+            title: props.task.title,
+        }
+    })
 
     const onSubmit: SubmitHandler<any> = (task: Task) => {
-        console.log(task.title)
-        // fetch(
-        //     "/api/create-task",
-        //     {
-        //         method: "POST",
-        //         body: JSON.stringify({
-        //             // a: 'bbb'
-        //             id: task.id,
-        //             title: task.title,
-        //             column_id: task.column_id,
-        //         })
-        //     }
-        // )
+        console.log(task)
+        fetch(
+            "/api/tasks/edit",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    ...task
+                })
+            }
+        )
+            .then(x => x.json)
+            .then(x => {
+                console.log(x);
+            })
     }
 
 
@@ -40,15 +36,31 @@ export default function Card(props: { task: Task, children?: any }) {
         <div className="card mt-2" >
             <div className="card-body">
                 <div>Колонка #{props.task.column_id}, карточка #{props.task.id}</div>
-
                 {(() => {
                     if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
                     return <>
                         <div className="p-2">
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <input {...register("task_title")} placeholder="Текст задачи" />
+                                <input {...register("title")} placeholder="Текст задачи" />
                                 <button>сохранить</button>
                             </form>
+                            <div className="p-2">
+                                <p>Переместить в</p>
+                                <ul>
+                                    {[
+                                        [1, "Новые"],
+                                        [2, "Сейчас в работе"],
+                                        [3, "Выполненные"],
+                                        [4, "На паузе"],
+                                        [5, "Корзина"],
+                                    ]
+                                        .map(([columnId, columnName], i) => <li
+                                            onClick={() => {
+                                                moveToColumn(props.task, Number(columnId))
+                                            }}
+                                        >{columnName}</li>)}
+                                </ul>
+                            </div>
                         </div>
                     </>
                 })()}
@@ -61,4 +73,28 @@ export default function Card(props: { task: Task, children?: any }) {
         </div>
         {props.children}
     </>
+}
+
+
+function moveToColumn(task: Task, newColumnId: number) {
+    console.log({
+        ...task,
+        column_id: newColumnId
+    });
+
+    fetch(
+        "/api/tasks/edit",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                ...task,
+                column_id: newColumnId
+            })
+        }
+    )
+        .then(x => x.json)
+        .then(x => {
+            console.log(x);
+            updatetasks();
+        })
 }
