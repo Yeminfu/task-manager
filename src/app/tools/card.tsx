@@ -36,7 +36,6 @@ export default function Card(props: { task: Task, children?: any }) {
     }
 
     return <>
-        {JSON.stringify({ isOpen })}
         <div className="card mt-2" onClick={() => { if (!isOpen) setIsOpen(true) }}>
             <div className="card-body">
                 {(() => {
