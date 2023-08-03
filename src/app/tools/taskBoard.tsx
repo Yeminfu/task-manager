@@ -75,22 +75,6 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                     </div>
                 )}
         </div>
-        <table className="table">
-            <thead>
-                <tr>
-                    <th>columns</th>
-                    <th>project</th>
-                    <th>tasks {stateTasks.length}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><pre>{JSON.stringify(props.columns, null, 2)}</pre></td>
-                    <td><pre>{JSON.stringify(props.project, null, 2)}</pre></td>
-                    <td><pre>{JSON.stringify(stateTasks, null, 2)}</pre></td>
-                </tr>
-            </tbody>
-        </table>
     </div >
 }
 
