@@ -62,13 +62,12 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
         <div className="d-flex">
             {props.columns
                 ?.map((column, i: any) =>
-                    <div key={i}>
+                    <div key={column.id}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
                             <div className="bg-white p-1">{column.title} {column.id}</div>
                             <div>
                                 {stateTasks
-                                    .map((task, i1) => <div key={i1}>
-                                        {/* <pre>{JSON.stringify([column.id, task.column_id, column.id == task.column_id])}</pre> */}
+                                    .map((task, i1) => <div key={task.id}>
                                         {task.column_id === column.id ? <Card task={task} /> : null}
                                     </div>)}
                             </div>

@@ -36,9 +36,9 @@ export default function Card(props: { task: Task, children?: any }) {
     }
 
     return <>
-        <div className="card mt-2" >
+        {JSON.stringify({ isOpen })}
+        <div className="card mt-2" onClick={() => { if (!isOpen) setIsOpen(true) }}>
             <div className="card-body">
-                <div>Колонка #{props.task.column_id}, карточка #{props.task.id}</div>
                 {(() => {
                     if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
                     return <>
@@ -58,7 +58,7 @@ export default function Card(props: { task: Task, children?: any }) {
                                         [5, "Корзина"],
                                     ]
                                         .map(([columnId, columnName], i) => <li
-                                            key={i}
+                                            key={columnId}
                                             onClick={() => {
                                                 moveToColumn(props.task, Number(columnId))
                                             }}
@@ -69,9 +69,13 @@ export default function Card(props: { task: Task, children?: any }) {
                     </>
                 })()}
 
-                <div>
-                    <button onClick={() => setIsOpen(!isOpen)}>Изменить/отмена</button>
-                </div>
+                {isOpen &&
+                    <div>
+                        <button onClick={() => {
+                            setIsOpen(false);
+                        }}>Изменить/отмена</button>
+                    </div>
+                }
 
             </div>
         </div>
