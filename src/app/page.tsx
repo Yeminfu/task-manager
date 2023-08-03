@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TaskBoard, { Column } from './tools/taskBoard';
 import db_connection from './tools/dbConnect';
 
 
@@ -18,23 +17,14 @@ export interface Task {
 
 export default async function Home() {
 
-  const columns: Column[] = await getColumns();
-  const projects: Project[] = await getProjects();
-  if (!projects) return <>Не загрузились проекты</>;
-  const project = projects[0];
-  const tasks: Task[] = await getTasks();
   return (
     <main>
-      <div className='container'>
-        <TaskBoard columns={columns} project={project} tasks={tasks} />
-      </div>
+      <h1>Главная</h1>
     </main>
   )
 }
 
-
-
-async function getColumns(): Promise<any> {
+export async function getColumns(): Promise<any> {
   return await new Promise(
     r => db_connection.query(
       `SELECT id, title FROM columns`,
@@ -49,7 +39,7 @@ async function getColumns(): Promise<any> {
 }
 
 
-async function getProjects(): Promise<Project[]> {
+export async function getProjects(): Promise<Project[]> {
   return await new Promise(
     r => db_connection.query(
       `SELECT * FROM projects`,
