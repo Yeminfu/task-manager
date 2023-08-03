@@ -21,8 +21,8 @@ export default async function Home() {
   return (
     <main>
       <h1>Главная</h1>
-      <CreateProjectForm/>
-      
+      <CreateProjectForm />
+
     </main>
   )
 }
@@ -59,10 +59,10 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 
-export async function getTasks(): Promise<Task[]> {
+export async function getTasks(projectId: number): Promise<Task[]> {
   return await new Promise(
     r => db_connection.query(
-      `SELECT * FROM tasks`,
+      `SELECT * FROM tasks WHERE project_id = ${projectId}`,
       function (err, res: Task[]) {
         if (err) {
           console.log('err #22m4m6n', err);

@@ -7,7 +7,7 @@ export default async function Page({ params }: any) {
     const projects: Project[] = await getProjects();
     if (!projects) return <>Не загрузились проекты</>;
     const project = id;
-    const tasks: Task[] = await getTasks();
+    const tasks: Task[] = await getTasks(id);
     return <>
         <TaskBoard columns={columns} project={project} tasks={tasks} />
     </>
