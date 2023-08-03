@@ -64,7 +64,7 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 ?.map((column, i: any) =>
                     <div key={column.id}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-                            <div className="bg-white p-1">{column.title} {column.id}</div>
+                            <div className="bg-white p-1 h2 text-nowrap">{column.title}</div>
                             <div>
                                 {stateTasks
                                     .map((task, i1) => <div key={task.id}>

@@ -36,7 +36,7 @@ export default function Card(props: { task: Task, children?: any }) {
     }
 
     return <>
-        <div className="card mt-2" onClick={() => { if (!isOpen) setIsOpen(true) }}>
+        <div className="card mt-2" style={{ minWidth: "100px" }} onClick={() => { if (!isOpen) setIsOpen(true) }}>
             <div className="card-body">
                 {(() => {
                     if (!isOpen) return <h5 className="card-title">{props.task.title}</h5>
