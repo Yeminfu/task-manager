@@ -27,7 +27,7 @@ const $stateTasks = createStore<Task[]>([])
         (_, x) => x ? x : []
     );
 
-export default function TaskBoard(props: { columns: Column[], project: Project, tasks: Task[] }) {
+export default function TaskBoard(props: { columns: Column[], project: number, tasks: Task[] }) {
     useEffect(() => {
         setStateTasks(props.tasks);
     }, [props.tasks]);
@@ -49,7 +49,7 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                         body: JSON.stringify({
                             title: "Новая задача",
                             column_id: 1,
-                            project_id: 1,
+                            project_id: props.project,
                         })
                     }
                 )
@@ -64,7 +64,7 @@ export default function TaskBoard(props: { columns: Column[], project: Project, 
                 ?.map((column, i: any) =>
                     <div key={column.id}>
                         <div className='bg-secondary p-2 m-1' style={{ minHeight: 100 }}>
-                            <div className="bg-white p-1 h2 text-nowrap">{column.title}</div>
+                            <div className="bg-white p-1 h4 text-nowrap">{column.title}</div>
                             <div>
                                 {stateTasks
                                     .map((task, i1) => <div key={task.id}>
