@@ -2,7 +2,6 @@
 
 import { useForm } from 'react-hook-form';
 
-
 export default function CreateProjectForm() {
     const {
         register,
@@ -17,7 +16,9 @@ export default function CreateProjectForm() {
     </>
 }
 
-
-async function onSubmit(values: any) {
-    console.log('onSubmit', values);
+async function onSubmit({ title }: any) {
+    fetch("/api/projects/create", {
+        method: "POST",
+        body: JSON.stringify({ title })
+    })
 }
