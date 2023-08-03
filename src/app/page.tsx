@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import db_connection from './tools/dbConnect';
+import CreateProjectForm from './tools/createProjectForm';
 
 
 export interface Project {
@@ -20,9 +21,13 @@ export default async function Home() {
   return (
     <main>
       <h1>Главная</h1>
+      <CreateProjectForm/>
+      
     </main>
   )
 }
+
+
 
 export async function getColumns(): Promise<any> {
   return await new Promise(
