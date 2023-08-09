@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Card from "./card";
-import { Project } from "../page";
 import { createStore, createEvent } from "effector";
 import { useStore } from "effector-react";
 
@@ -36,7 +35,7 @@ export default function TaskBoard(props: { columns: Column[], project: number, t
 
     return <div>
         <button onClick={() => {
-            updatetasks();
+            updatetasks(props.project);
         }}>
             update tasks
         </button>
@@ -75,12 +74,12 @@ export default function TaskBoard(props: { columns: Column[], project: number, t
                     </div>
                 )}
         </div>
-    </div >
+    </div>
 }
 
-export function updatetasks() {
+export function updatetasks(project: number) {
     fetch(
-        "/api/tasks/get",
+        `/api/tasks/get/${project}`,
     )
         .then(x => x.json())
         .then(({ tasks }) => {

@@ -84,10 +84,6 @@ export default function Card(props: { task: Task, children?: any }) {
 
 
 function moveToColumn(task: Task, newColumnId: number) {
-    console.log({
-        ...task,
-        column_id: newColumnId
-    });
 
     fetch(
         "/api/tasks/edit",
@@ -101,7 +97,6 @@ function moveToColumn(task: Task, newColumnId: number) {
     )
         .then(x => x.json)
         .then(x => {
-            console.log(x);
-            updatetasks();
+            updatetasks(task.project_id);
         })
 }
