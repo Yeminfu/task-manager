@@ -1,4 +1,4 @@
-import db_connection from '@/app/tools/dbConnect';
+import {pool} from '@/app/tools/dbConnect';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         const values = [task.title, task.column_id, task.id];
         console.log({ qs, values });
 
-        db_connection.query(qs, values, function (err, res: any) {
+        pool.query(qs, values, function (err, res: any) {
             if (err) { console.log('err #c9c6f3bnNn', err) }
             console.log(res);
             

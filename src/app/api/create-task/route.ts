@@ -1,5 +1,5 @@
 import { Task } from '@/app/page';
-import db_connection from '@/app/tools/dbConnect';
+import {pool} from '@/app/tools/dbConnect';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 async function createTask({ title, column_id, project_id, description }: Task) {
     const qs = `INSERT INTO tasks (title, description, column_id, project_id) VALUES (?,?,?,?)`;
     const values = [title, description, column_id, project_id];
-    return await new Promise(r => db_connection.query(qs, values, function (err: any, taskResult: any) {
+    return await new Promise(r => pool.query(qs, values, function (err: any, taskResult: any) {
         if (err) console.log('err #n5n7nfKf', err);
         r(taskResult.insertId)
     }))

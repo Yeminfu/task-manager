@@ -1,4 +1,4 @@
-import db_connection from '@/app/tools/dbConnect';
+import {pool} from '@/app/tools/dbConnect';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -24,7 +24,7 @@ async function createProject(title: string) {
     return await new Promise(r => {
         const qs = `INSERT INTO projects (title) VALUES (?)`;
         const values = [title];
-        db_connection.query(qs, values, function (err, res: any) {
+        pool.query(qs, values, function (err, res: any) {
             if (err) { console.log('err #c9c6f3bnNn', err) }
             console.log(res);
 

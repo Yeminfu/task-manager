@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import db_connection from './tools/dbConnect';
+import { pool } from './tools/dbConnect';
 import CreateProjectForm from './tools/createProjectForm';
 
 
@@ -31,7 +31,7 @@ export default async function Home() {
 
 export async function getColumns(): Promise<any> {
   return await new Promise(
-    r => db_connection.query(
+    r => pool.query(
       `SELECT id, title FROM columns`,
       function (err, res) {
         if (err) {
@@ -46,7 +46,7 @@ export async function getColumns(): Promise<any> {
 
 export async function getProjects(): Promise<Project[]> {
   return await new Promise(
-    r => db_connection.query(
+    r => pool.query(
       `SELECT * FROM projects`,
       function (err, res: Project[]) {
         if (err) {
@@ -61,7 +61,7 @@ export async function getProjects(): Promise<Project[]> {
 
 export async function getTasks(projectId: number): Promise<Task[]> {
   return await new Promise(
-    r => db_connection.query(
+    r => pool.query(
       `SELECT * FROM tasks WHERE project_id = ${projectId}`,
       function (err, res: Task[]) {
         if (err) {
