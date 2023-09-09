@@ -1,4 +1,4 @@
-import {pool} from '@/app/tools/dbConnect';
+import { pool } from '@/app/tools/dbConnect';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -14,14 +14,12 @@ export async function POST(request: Request) {
     const res = await new Promise(r => {
         const qs = `UPDATE tasks SET title = ?, column_id = ? WHERE id = ?`;
         const values = [task.title, task.column_id, task.id];
-        console.log({ qs, values });
 
         pool.query(qs, values, function (err, res: any) {
             if (err) { console.log('err #c9c6f3bnNn', err) }
-            console.log(res);
-            
             r(res.affectedRows);
         })
+
     });
 
     if (res) {

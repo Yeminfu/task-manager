@@ -75,7 +75,6 @@ export default function Card(props: { task: Task, children?: any }) {
                         }}>Изменить/отмена</button>
                     </div>
                 }
-
             </div>
         </div>
         {props.children}
