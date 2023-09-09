@@ -43,7 +43,7 @@ export default function Card(props: { task: Task, children?: any }) {
                     return <>
                         <div className="p-2">
                             <form onSubmit={handleSubmit(onSubmit)}>
-                                <input {...register("title")} placeholder="Текст задачи" />
+                                <textarea {...register("title")} placeholder="Текст задачи" />
                                 <button>сохранить</button>
                             </form>
                             <div className="p-2">
