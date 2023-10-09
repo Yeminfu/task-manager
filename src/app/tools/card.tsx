@@ -8,6 +8,7 @@ export default function Card(props: { task: Task, children?: any }) {
     const {
         register,
         handleSubmit,
+        getValues,
     } = useForm<Task>({
         defaultValues: {
             id: props.task.id,
@@ -59,7 +60,10 @@ export default function Card(props: { task: Task, children?: any }) {
                                         .map(([columnId, columnName], i) => <li
                                             key={columnId}
                                             onClick={() => {
-                                                moveToColumn(props.task, Number(columnId))
+                                                moveToColumn({
+                                                    ...props.task,
+                                                    title: getValues().title
+                                                }, Number(columnId))
                                             }}
                                         >{columnName}</li>)}
                                 </ul>

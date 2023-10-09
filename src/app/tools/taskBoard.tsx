@@ -34,11 +34,6 @@ export default function TaskBoard(props: { columns: Column[], project: number, t
     const stateTasks: Task[] = useStore($stateTasks);
 
     return <div>
-        <button onClick={() => {
-            updatetasks(props.project);
-        }}>
-            update tasks
-        </button>
         <button className='btn btn-sm btn-outline-dark'
             onClick={() => {
                 fetch(
